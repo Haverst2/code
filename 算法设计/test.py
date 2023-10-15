@@ -1,47 +1,34 @@
-import time
-import random
-import matplotlib.pyplot as plt
-import numpy as np
+def partition(arr, low, high):
+    pivot = arr[high]  # 选择最后一个元素作为主元素
+    i = low - 1  # 初始化较小元素的索引
 
-define = 1
-xlable = []
-ylable = []
-class find:
-    def __init__( self,data:list ) :
-        self.data = data
+    for j in range(low, high):
+        if arr[j] <= pivot:
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
 
-    def find( self,x ) :
-        startTime = time.time()
-        left, right = 0, len(self.data) - 1
-        while left <= right:
-            mid = left + (right - left) // 2
-            if self.data[mid] == x:
-                endTime = time.time()
-                print(f"{(endTime - startTime)*1000:.6f}ms\n")
-                return mid  # Element found, return its index
-            elif self.data[mid] < x:
-                left = mid + 1  # Search in the right half
-            else:
-                right = mid - 1  # Search in the left half
-        endTime = time.time()
-        ylable.append((endTime - startTime)*1000)
-        print(f"this time is not find the solution {(endTime-startTime)*1000:.6f}ms\n")
-        return -1  # Element not found
-    
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    return i + 1
 
-if define:
-    start,end = 0,100
-    xname = 'data_size'
-    yname = 'cost_time/ms'
-    for item in range(4):
-        data = range(start,end)
-        xlable.append(str(end))
-        Find = find(data)
-        Find.find(random.randint(start,end))
-        Find.find(end+1)
-        end *= 10
-    plt.bar(xlable,ylable,width=0.5)
-    plt.xlabel(xname)
-    plt.ylabel(yname)
-    plt.show()
-    
+def linear_time_select(arr, low, high, k):
+    if low == high:
+        return arr[low]
+
+    # 获取主元素的位置
+    pivot_index = partition(arr, low, high)
+
+    # 计算主元素在有序数组中的位置
+    rank = pivot_index - low + 1
+
+    if k == rank:
+        return arr[pivot_index]
+    elif k < rank:
+        return linear_time_select(arr, low, pivot_index - 1, k)
+    else:
+        return linear_time_select(arr, pivot_index + 1, high, k - rank)
+
+# 测试线性时间选择算法
+arr = [3, 2, 1, 5, 4]
+k = 3
+result = linear_time_select(arr, 0, len(arr) - 1, arr[0])
+print(f"The {k}-th smallest element is {result}")
