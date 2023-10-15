@@ -43,6 +43,7 @@ bin
 *.png
 *.pgm
 *.ppm
+*.psd
 
 *.cmake
 *.make
