@@ -1,11 +1,11 @@
-with open("《朕》.txt","r") as f:
-    a = 3
+with open("我的女友是恶劣大小姐.txt","r") as f:
+    a = 1
     with open("a.txt","w") as e:
         for line in f:
-            if line[3:a+3].isdigit() == True:
-                number = int(line[3:a+3])
+            if line[:a].isdigit() == True:
+                number = int(line[:a])
                 print(line)
-                # if number == 9 :
+                #  if number == 9 :
                 #     a = a + 1
                 # elif number == 99:
                 #     a = a + 1
