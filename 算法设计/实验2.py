@@ -98,6 +98,30 @@ def linear_time_select(arr, low, high, k):
     else:
         return linear_time_select(arr, pivot_index + 1, high, k - rank)
     
+def qsort(q, l, r):
+    x = q[(l + r) // 2]
+    i, j = l - 1, r + 1
+    while True:
+        i += 1
+        while q[i] < x:
+            i += 1
+        j -= 1
+        while q[j] > x:
+            j -= 1
+        if i < j:
+            q[i], q[j] = q[j], q[i]
+        else:
+            return i if i == j else j
+        
+def kth_smallest(q, l, r, k):
+    index = qsort(q, l, r)
+    if index == k - 1:
+        return q[index]
+    elif index > k - 1:
+        return kth_smallest(q, l, index, k)
+    else:
+        return kth_smallest(q, index + 1, r, k)
+    
 
 if define:
     Drange = 30
@@ -113,7 +137,7 @@ if define:
         test.MergeSort()
         test.QuickSort()
         startTime = time.time()
-        result = linear_time_select(data,0,len(data)-1,data[0])
+        result = linear_time_select(data,0,len(data)-1,3)
         endTime = time.time()
         print(f"Linear time select cost time is {(endTime-startTime)*1000:.6f}ms" )
         # print(test.MergeSort())

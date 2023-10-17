@@ -1,34 +1,38 @@
-def partition(arr, low, high):
-    pivot = arr[high]  # 选择最后一个元素作为主元素
-    i = low - 1  # 初始化较小元素的索引
+def longest_common_subsequence(X, Y):
+    m = len(X)
+    n = len(Y)
 
-    for j in range(low, high):
-        if arr[j] <= pivot:
-            i += 1
-            arr[i], arr[j] = arr[j], arr[i]
+    # 创建一个(m+1) x (n+1)的二维数组，用于存储中间结果
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
 
-    arr[i + 1], arr[high] = arr[high], arr[i + 1]
-    return i + 1
+    # 填充dp数组，根据字符匹配情况更新dp表格
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if X[i - 1] == Y[j - 1]:
+                dp[i][j] = dp[i - 1][j - 1] + 1
+            else:
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
 
-def linear_time_select(arr, low, high, k):
-    if low == high:
-        return arr[low]
+    # 从dp表格中回溯以构造最长公共子序列
+    lcs = []
+    i, j = m, n
+    while i > 0 and j > 0:
+        if X[i - 1] == Y[j - 1]:
+            lcs.append(X[i - 1])
+            i -= 1
+            j -= 1
+        elif dp[i - 1][j] > dp[i][j - 1]:
+            i -= 1
+        else:
+            j -= 1
 
-    # 获取主元素的位置
-    pivot_index = partition(arr, low, high)
+    # 最长公共子序列是逆序的，所以需要翻转
+    lcs.reverse()
 
-    # 计算主元素在有序数组中的位置
-    rank = pivot_index - low + 1
+    return "".join(lcs)
 
-    if k == rank:
-        return arr[pivot_index]
-    elif k < rank:
-        return linear_time_select(arr, low, pivot_index - 1, k)
-    else:
-        return linear_time_select(arr, pivot_index + 1, high, k - rank)
-
-# 测试线性时间选择算法
-arr = [3, 2, 1, 5, 4]
-k = 3
-result = linear_time_select(arr, 0, len(arr) - 1, arr[0])
-print(f"The {k}-th smallest element is {result}")
+# 示例用法
+X = "ABCBDAB"
+Y = "BDCAB"
+result = longest_common_subsequence(X, Y)
+print("最长公共子序列为:", result)
