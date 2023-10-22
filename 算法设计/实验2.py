@@ -159,12 +159,3 @@ if define:
     plt.show()
 
         
-
-
-
-
-
-
-
-            
-

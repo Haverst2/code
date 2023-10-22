@@ -146,8 +146,8 @@ def generate_random_uppercase_string(length):
 if define:
     xname = 'data_size'
     yname = 'cost_time/ms'
-    Dgrade = 5
-    UPgrade = 10
+    Dgrade = 50
+    UPgrade = 70
     y1,y2,y3 = [],[],[]
     xlable = []
     for _ in range(5):
@@ -155,27 +155,27 @@ if define:
         Y = generate_random_uppercase_string(random.randint(Dgrade,UPgrade))
         test = LongestCommonSubsequence(X,Y)
         l1,k1,t1 = test.longest_common_subsequence()
-        l2,k2,t2 = test.longest_common_subsequence_recursion()
-        # l3,k3,t3 = test.longest_common_subsequence_memorandum()
+        # l2,k2,t2 = test.longest_common_subsequence_recursion()
+        l3,k3,t3 = test.longest_common_subsequence_memorandum()
         # print(l1)
         # print(k1)
-        # print(t1,t2,t3)
+        print(t1,t3)
         y1.append(t1)
-        y2.append(t2)
-        # y3.append(t3)
+        # y2.append(t2)
+        y3.append(t3)
         xlable.append([Dgrade,UPgrade])
-        Dgrade+=1;UPgrade+=1
+        Dgrade+=20;UPgrade+=20
     width = 0.4
     x_pos = np.arange(len(xlable))
     plt.bar(x_pos - width/2,y1,width=0.4,label='dynamic programming')
-    plt.bar(x_pos + width/2,y2,width=0.2,label='recursion')
-    # plt.bar(x_pos + width/2,y3,width=0.4,label='memorandum')
+    # plt.bar(x_pos + width/2,y2,width=0.2,label='recursion')
+    plt.bar(x_pos + width/2,y3,width=0.4,label='memorandum')
     for i,value in enumerate(y1):
         plt.text(i - width/2,value,f'{value:.5f}',ha='center',va = 'bottom')
-    for i,value in enumerate(y2):
-        plt.text(i + width/2,value,f'{value:.5f}',ha='center',va = 'bottom')
-    # for i,value in enumerate(y3):
+    # for i,value in enumerate(y2):
     #     plt.text(i + width/2,value,f'{value:.5f}',ha='center',va = 'bottom')
+    for i,value in enumerate(y3):
+        plt.text(i + width/2,value,f'{value:.5f}',ha='center',va = 'bottom')
     plt.xticks(x_pos,xlable)
     plt.xlabel(xname)
     plt.ylabel(yname)

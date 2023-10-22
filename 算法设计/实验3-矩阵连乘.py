@@ -3,14 +3,11 @@ import random
 import numpy as np
 import matplotlib.pyplot as plt
 
-define = 0
+define = 1
 
 class MatrixConcatenation:
     def __init__(self,data:list) -> None:
-        self.data = data
-        
-
-    
+        self.data = data 
     def matrix_chain_order(self):
         startTime = time.time()
         n = len(self.data) - 1
@@ -100,24 +97,24 @@ if define:
         # print_optimal_parens(s2,1,len(data)-1);print('\n')
         # print_optimal_parens(s3,1,len(data)-1);print('\n')
         # print(f'{t1:.5},{t2:.5},{t3:.5}')
-        y1.append(t1*1000),y2.append(t2*1000),y3.append(t3*1000)
+        y1.append(t1*1000)
+        y2.append(t2*1000)
+        y3.append(t3*1000)
         Drange += 2
     width = 0.4
     x_pos = np.arange(len(xlable))
     plt.bar(x_pos - width/2,y1,width=0.4,label='dynamic programming')
     plt.bar(x_pos + width/2,y2,width=0.2,label='recursion')
-    plt.bar(x_pos + width/2,y3,width=0.4,label='memorandum')
+    # plt.bar(x_pos + width/2,y3,width=0.4,label='memorandum')
     for i,value in enumerate(y1):
         plt.text(i - width/2,value,f'{value:.5f}',ha='center',va = 'bottom')
     for i,value in enumerate(y2):
         plt.text(i,value,f'{value:.5f}',ha='left',va = 'bottom')
-    for i,value in enumerate(y3):
-        plt.text(i + width/2,value,f'{value:.5f}',ha='center',va = 'bottom')
+    # for i,value in enumerate(y3):
+    #     plt.text(i + width/2,value,f'{value:.5f}',ha='center',va = 'bottom')
     plt.xticks(x_pos,xlable)
     plt.xlabel(xname)
     plt.ylabel(yname)
-    plt.title('dynamic programming compare memorandum')
-
+    plt.title('dynamic programming compare recursion')
     plt.legend()
-
     plt.show()
