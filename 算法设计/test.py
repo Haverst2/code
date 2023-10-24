@@ -1,38 +1,67 @@
-def longest_common_subsequence(X, Y):
-    m = len(X)
-    n = len(Y)
 
-    # 创建一个(m+1) x (n+1)的二维数组，用于存储中间结果
-    dp = [[0] * (n + 1) for _ in range(m + 1)]
+chinese_char = "A你好"  # 一个中文字符
+binary_encoding = chinese_char.encode('utf-8')
+binary_representation = ' '.join(format(bit, '08b') for bit in binary_encoding)
+print(binary_representation)
+# import binascii
 
-    # 填充dp数组，根据字符匹配情况更新dp表格
-    for i in range(1, m + 1):
-        for j in range(1, n + 1):
-            if X[i - 1] == Y[j - 1]:
-                dp[i][j] = dp[i - 1][j - 1] + 1
-            else:
-                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+# # 二进制字符串
+# binary_str = "01000001111001001011110110100000111001011010010110111101"
 
-    # 从dp表格中回溯以构造最长公共子序列
-    lcs = []
-    i, j = m, n
-    while i > 0 and j > 0:
-        if X[i - 1] == Y[j - 1]:
-            lcs.append(X[i - 1])
-            i -= 1
-            j -= 1
-        elif dp[i - 1][j] > dp[i][j - 1]:
-            i -= 1
+# # 使用 binascii.unhexlify 将二进制字符串转换为字节对象
+# byte_data = binascii.unhexlify(format(int(binary_str, 2), 'x'))
+
+# # 将字节对象转换为文本字符串
+# text_str = byte_data.decode('utf-8')
+# print(text_str)
+
+import heapq
+from collections import defaultdict
+
+class HuffmanEncoder:
+    def __init__(self):
+        self.freq_dict = defaultdict(int)
+        self.encoding = {}
+        self.decoding = {}
+
+    def build_freq_dict(self, text):
+        for char in text:
+            self.freq_dict[char] += 1
+
+    def build_huffman_tree(self):
+        priority_queue = [(freq, char) for char, freq in self.freq_dict.items()]
+        heapq.heapify(priority_queue)
+
+        while len(priority_queue) > 1:
+            freq1, char1 = heapq.heappop(priority_queue)
+            freq2, char2 = heapq.heappop(priority_queue)
+            combined_freq = freq1 + freq2
+            combined_char = char1 + char2
+            heapq.heappush(priority_queue, (combined_freq, combined_char))
+
+        huffman_tree = priority_queue[0][1]
+        self.build_huffman_codes(huffman_tree, "")
+
+    def build_huffman_codes(self, node, code):
+        if len(node) == 1:
+            self.encoding[node] = code
+            self.decoding[code] = node
         else:
-            j -= 1
+            self.build_huffman_codes(node[0], code + "0")
+            self.build_huffman_codes(node[1], code + "1")
 
-    # 最长公共子序列是逆序的，所以需要翻转
-    lcs.reverse()
+    def encode(self, text):
+        encoded_text = ""
+        for char in text:
+            encoded_text += self.encoding[char]
+        return encoded_text
 
-    return "".join(lcs)
-
-# 示例用法
-X = "ABCBDAB"
-Y = "BDCAB"
-result = longest_common_subsequence(X, Y)
-print("最长公共子序列为:", result)
+    def decode(self, encoded_text):
+        decoded_text = ""
+        current_code = ""
+        for bit in encoded_text:
+            current_code += bit
+            if current_code in self.decoding:
+                decoded_text += self.decoding[current_code]
+                current_code = ""
+        return decoded_text
