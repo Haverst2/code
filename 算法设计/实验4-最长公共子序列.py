@@ -10,11 +10,9 @@ class LongestCommonSubsequence:
     def __init__(self,x,y) -> None:
         self.X = x
         self.Y = y
-    
     def longest_common_subsequence(self):
         m = len(self.X)
         n = len(self.Y)
-
         # 创建一个(m+1) x (n+1)的二维数组，用于存储中间结果
         dp = [[0] * (n+1) for _ in range(m+1)]
 
@@ -25,7 +23,6 @@ class LongestCommonSubsequence:
                     dp[i][j] = dp[i - 1][j - 1] + 1
                 else:
                     dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
-        
         # 从dp表格中回溯以构造最长公共子序列
         lcs = []
         i, j = m, n

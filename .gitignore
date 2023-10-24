@@ -51,6 +51,7 @@ bin
 
 *.mp4
 *.avi
+*.txt
 
 devel
 build
